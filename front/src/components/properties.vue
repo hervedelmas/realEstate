@@ -186,7 +186,7 @@ export default {
         }).bind(this)
       );
     },
-    propertyData(data) {
+    propertyData(data) { 
       if (data.data.update.name == "") {
         alert("The name must be entered");
       } else {

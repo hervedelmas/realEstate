@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export default {
+export default { 
   async properties(queries) {
     let res = await axios.get("http://localhost:8000/properties?queries=" + queries);
     return res.data;
