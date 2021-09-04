@@ -1,6 +1,24 @@
 const express = require('express');
-const axios = require("axios");
+const multer = require('multer')
 const cors = require("cors");
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+  if (!allowedTypes.includes(file.mimetype)) {
+    const error = new Error("Incorrect file");
+    error.code = "INCORRECT_FILETYPE";
+    return cb(error, false)
+  }
+  cb(null, true);
+}
+
+const upload = multer({
+  dest: './uploads',
+  fileFilter,
+  limits: {
+    fileSize: 5000000
+  }
+});
 
 const app = express();
 
@@ -25,6 +43,7 @@ app.use(cors());
 app.use(express.urlencoded({
   extended: true
 }));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 app.get('/properties', (req, res) => {
   const queries = JSON.parse(req.query.queries);
@@ -34,6 +53,14 @@ app.get('/properties', (req, res) => {
 app.post('/property', (req, res) => {
   const data = req.body.data;
   saveProperty(data, res).catch(console.dir);
+});
+
+app.post('/uploads', upload.single('file'), (req, res) => {
+  try {
+    res.send(req.file);
+  } catch (err) {
+    res.send(400);
+  }
 });
 
 app.get('/deleteProperty', (req, res) => {
@@ -78,7 +105,7 @@ const findProperties = async (queries, res) => {
 const saveProperty = async (property, res) => {
   try {
     await client.connect();
-
+    console.log(property);
     const result = await properties.updateOne(property.query, { $set: property.update },
       { upsert: true }
     );
@@ -107,7 +134,6 @@ const saveProperty = async (property, res) => {
 const deleteProperty = async (query, res) => {
   try {
     await client.connect();
-    console.log(query);
     const result = await properties.deleteOne(query);
     if (result.deletedCount === 1) {
       console.log("Successfully deleted one document.");

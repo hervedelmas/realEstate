@@ -50,84 +50,88 @@
       </button>
     </div>
     <div id="addProperty" class="box subtitle hide container is-1">
-      ADD Property :
-      <div class="img">
-        <div class="preview">
-          <img v-bind="image" v-if="url" :src="url" />
+      <form @submit.prevent="propertyData" enctype="multipart/form-data">
+        ADD Property :
+        <div class="img">
+          <div class="preview">
+            <img ref="image" v-bind="image" v-if="url" :src="url" />
+          </div>
         </div>
-      </div>
-      <input class="input" type="file" @change="onFileChange" />
-      <input type="text" v-model="key" placeholder="key" hidden />
-      <div class="columns is-mobile">
-        <div class="column">
-          <input class="input" type="text" v-model="name" placeholder="name" />
+        <input class="input" ref="file" type="file" @change="onFileChange" />
+        <input type="text" v-model="key" placeholder="key" hidden />
+        <div class="columns is-mobile">
+          <div class="column">
+            <input
+              class="input"
+              type="text"
+              v-model="name"
+              placeholder="name"
+            />
+          </div>
+          <div class="column">
+            <input
+              class="input"
+              type="text"
+              v-model="location"
+              placeholder="location"
+            />
+          </div>
+          <div class="column">
+            <input
+              class="input"
+              type="text"
+              v-model="price"
+              placeholder="price"
+            />
+          </div>
         </div>
-        <div class="column">
-          <input
-            class="input"
-            type="text"
-            v-model="location"
-            placeholder="location"
-          />
-        </div>
-        <div class="column">
-          <input
-            class="input"
-            type="text"
-            v-model="price"
-            placeholder="price"
-          />
-        </div>
-      </div>
-      <div class="columns is-mobile">
-        <div class="column">
-          <button
-            class="button is-danger is-light"
-            type="submit"
-            @click="deletePropertyData({ name: key })"
-          >
-            DELETE
-          </button>
-        </div>
-        <div class="column">
-          <button
-            class="button is-link is-light"
-            @click="searchProperties()"
-          >
-            CANCEL
-          </button>
-        </div>
-        <div class="column">
-          <button
-            style="float: right"
-            class="button is-primary is-light"
-            type="submit"
-            @click="
-              propertyData({
-                data: {
-                  query: { name: key },
-                  update: {
-                    name: name,
-                    location: location,
-                    price: price,
-                    thumbnail: url,
+        <div class="columns is-mobile">
+          <div class="column">
+            <button
+              class="button is-danger is-light"
+              type="submit"
+              @click="deletePropertyData({ name: key })"
+            >
+              DELETE
+            </button>
+          </div>
+          <div class="column">
+            <button class="button is-link is-light" @click="searchProperties()">
+              CANCEL
+            </button>
+          </div>
+          <div class="column">
+            <button
+              style="float: right"
+              class="button is-primary is-light"
+              type="submit"
+              @click="
+                propertyData({
+                  data: {
+                    query: { name: key },
+                    update: {
+                      name: name,
+                      location: location,
+                      price: price,
+                      thumbnail: url,
+                    },
                   },
-                },
-              })
-            "
-          >
-            SUBMIT
-          </button>
+                })
+              "
+            >
+              SUBMIT
+            </button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
-    <div class="wrapProperties">
+    <div class="box container is-1">
       <div class="box columns is-multiline">
         <div
           v-for="property in properties"
           :property="property"
           :key="property.name"
-          class="column is-one-quarter"
+          class="column"
         >
           <div
             class="card"
@@ -164,6 +168,7 @@ export default {
       searchPrice: "",
       url: null,
       image: "",
+      file: "",
     };
   },
   created() {
@@ -185,9 +190,16 @@ export default {
       );
     },
     async propertyData(data) {
+      console.log(data.data.query.name);
       if (data.data.update.name == "") {
         alert("The name must be entered");
       } else {
+        if (data.data.query.name == "") {
+          data.data.query.name = data.data.update.name;
+        }
+        const formData = new FormData();
+        formData.append("file", this.file);
+        data.formData = formData;
         actions.property(data).then(
           ((data) => {
             this.$set(this, "properties", data.properties);
@@ -222,16 +234,23 @@ export default {
       document.getElementById("searchProperties").style.display = "block";
     },
     onFileChange(e) {
-      const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      const file = this.$refs.file.files[0];
+      this.file = file;
+
+      this.url = "";
+      if (!allowedTypes.includes(file.type)) {
+        alert("Filetype is wrong!!");
+      } else if (file.size > 500000) {
+        alert("Too large, max size allowed is 500kb");
+      } else {
+        this.url = URL.createObjectURL(e.target.files[0]);
+      }
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.wrapProperties {
-  margin: 50px;
-}
 .hide {
   display: none;
 }
@@ -247,12 +266,13 @@ export default {
   max-height: 500px;
 }
 img {
-  height: auto;
+  height: 200px;
   width: 100%;
   border-radius: 0.375em;
 }
 .card {
   height: 300px;
+  width: 100%;
   background-position: center;
   background-size: cover;
   text-align: center;
@@ -262,6 +282,7 @@ img {
 
 .card-content {
   padding-top: 5px;
+  height: 290px;
   position: absolute;
   color: rgb(43, 103, 150);
   background-color: rgb(255, 253, 253);
