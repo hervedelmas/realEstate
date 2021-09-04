@@ -35,7 +35,6 @@
       <button
         style="float: right"
         class="button is-link is-light"
-        type="submit"
         @click="
           propertiesData(
             JSON.stringify({
@@ -50,7 +49,7 @@
       </button>
     </div>
     <div id="addProperty" class="box subtitle is-3 hide container is-1">
-      <form @submit.prevent="propertyData" enctype="multipart/form-data">
+      <form enctype="multipart/form-data">
         ADD Property :
         <div>
           <div class="preview">
@@ -89,7 +88,6 @@
           <div class="column">
             <button
               class="button is-danger is-light"
-              type="submit"
               @click="deletePropertyData({ name: key })"
             >
               DELETE
@@ -104,7 +102,6 @@
             <button
               style="float: right"
               class="button is-primary is-light"
-              type="submit"
               @click="
                 propertyData({
                   data: {
@@ -175,21 +172,21 @@ export default {
     this.propertiesData(JSON.stringify({}));
   },
   methods: {
-    async propertiesData(data) {
+    propertiesData(data) {
       actions.properties(JSON.stringify(data)).then(
         ((data) => {
           this.$set(this, "properties", data.properties);
         }).bind(this)
       );
     },
-    async deletePropertyData(data) {
+    deletePropertyData(data) {
       actions.deleteProperty(JSON.stringify(data)).then(
         ((data) => {
           this.$set(this, "properties", data.properties);
         }).bind(this)
       );
     },
-    async propertyData(data) {
+    propertyData(data) {
       if (data.data.update.name == "") {
         alert("The name must be entered");
       } else {
@@ -206,7 +203,7 @@ export default {
         );
       }
     },
-    async propertyUp(data) {
+    propertyUp(data) {
       actions.properties(JSON.stringify(data)).then(
         ((data) => {
           this.key = data.properties[0].name;
