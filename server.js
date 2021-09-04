@@ -105,7 +105,6 @@ const findProperties = async (queries, res) => {
 const saveProperty = async (property, res) => {
   try {
     await client.connect();
-    console.log(property);
     const result = await properties.updateOne(property.query, { $set: property.update },
       { upsert: true }
     );
