@@ -52,7 +52,7 @@
     <div id="addProperty" class="box subtitle is-3 hide container is-1">
       <form @submit.prevent="propertyData" enctype="multipart/form-data">
         ADD Property :
-        <div class="img">
+        <div>
           <div class="preview">
             <img ref="image" :src="url" />
           </div>
@@ -139,7 +139,7 @@
           >
             <div class="card-content">
               <h2 class="">name : {{ property.name }}</h2>
-              <img :src="`${property.thumbnail}`" />
+              <img class="img" :src="`${property.thumbnail}`" />
               <div>price : {{ property.price }}</div>
               <div>location : {{ property.location }}</div>
             </div>
@@ -190,7 +190,6 @@ export default {
       );
     },
     async propertyData(data) {
-      console.log(data.data.query.name);
       if (data.data.update.name == "") {
         alert("The name must be entered");
       } else {
@@ -266,9 +265,11 @@ export default {
   max-height: 500px;
 }
 img {
-  height: 200px;
   width: 100%;
   border-radius: 0.375em;
+}
+.img {
+  height: 200px;
 }
 .card {
   height: 300px;
