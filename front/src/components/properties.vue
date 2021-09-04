@@ -193,9 +193,11 @@ export default {
         if (data.data.query.name == "") {
           data.data.query.name = data.data.update.name;
         }
-        const formData = new FormData();
-        formData.append("file", this.file);
-        data.formData = formData;
+        if (this.file != "") {
+          const formData = new FormData();
+          formData.append("file", this.file);
+          data.formData = formData;
+        }
         actions.property(data).then(
           ((data) => {
             this.$set(this, "properties", data.properties);
@@ -277,7 +279,6 @@ img {
   background-color: rgb(255, 255, 255);
   border-radius: 0.375em;
 }
-
 .card-content {
   padding-top: 5px;
   height: 290px;
