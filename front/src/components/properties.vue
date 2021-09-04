@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div id="searchProperties" class="box subtitle container is-1">
+    <div id="searchProperties" class="box subtitle is-3 container is-1">
       SEARCH Properties :
       <div class="columns is-mobile">
         <div class="column">
@@ -49,12 +49,12 @@
         SEARCH
       </button>
     </div>
-    <div id="addProperty" class="box subtitle hide container is-1">
+    <div id="addProperty" class="box subtitle is-3 hide container is-1">
       <form @submit.prevent="propertyData" enctype="multipart/form-data">
         ADD Property :
         <div class="img">
           <div class="preview">
-            <img ref="image" v-bind="image" v-if="url" :src="url" />
+            <img ref="image" :src="url" />
           </div>
         </div>
         <input class="input" ref="file" type="file" @change="onFileChange" />
