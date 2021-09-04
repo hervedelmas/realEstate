@@ -5,7 +5,7 @@ export default {
     let res = await axios.get("http://localhost:8000/properties?queries=" + queries);
     return res.data;
   },
-  async property(data) {
+  async property(data) { 
     if (data.formData) {
       let res = await axios.post('http://localhost:8000/uploads', data.formData);
       if (res.status == 200) {

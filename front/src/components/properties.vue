@@ -187,7 +187,7 @@ export default {
       );
     },
     propertyData(data) { 
-      if (data.data.update.name == "") {
+      if (data.data.update.name == "") { 
         alert("The name must be entered");
       } else {
         if (data.data.query.name == "") {
