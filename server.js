@@ -137,7 +137,7 @@ const deleteProperty = async (query, res) => {
   }
 };
 
-const Properties = async (queries, res) => {
+const Properties = async (queries) => {
   try {
 
     const data = {
