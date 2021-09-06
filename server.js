@@ -86,7 +86,9 @@ const findProperties = async (queries, res) => {
       queries.price = Number(queries.price);
     }
 
-    Properties(queries, res);
+    const data = await Properties(queries, res);
+
+    res.send(data);
 
   } finally {
     await client.close();
@@ -103,7 +105,9 @@ const saveProperty = async (property, res) => {
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
     );
 
-    Properties(queries, res);
+    const data = await Properties(queries, res);
+
+    res.send(data);
 
   } catch (err) {
     console.error(err);
@@ -122,7 +126,9 @@ const deleteProperty = async (query, res) => {
       console.log("No documents matched the query. Deleted 0 documents.");
     }
 
-    Properties(queries, res);
+    const data = await Properties(queries, res);
+
+    res.send(data);
 
   } catch (err) {
     console.error(err);
@@ -143,7 +149,7 @@ const Properties = async (queries, res) => {
       ).toArray()
     };
 
-    res.send(data);
+    return data;
     
   } catch (err) {
     console.error(err);
