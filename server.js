@@ -105,7 +105,7 @@ const saveProperty = async (property, res) => {
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
     );
 
-    const data = await Properties(queries, res);
+    const data = await Properties({}, res);
 
     res.send(data);
 
@@ -126,7 +126,7 @@ const deleteProperty = async (query, res) => {
       console.log("No documents matched the query. Deleted 0 documents.");
     }
 
-    const data = await Properties(queries, res);
+    const data = await Properties({}, res);
 
     res.send(data);
 
