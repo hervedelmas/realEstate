@@ -128,7 +128,7 @@
           v-for="property in properties"
           :property="property"
           :key="property.name"
-          class="column"
+          class="column is-half"
         >
           <div
             class="card"
