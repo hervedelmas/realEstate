@@ -144,6 +144,7 @@ const Properties = async (queries, res) => {
     };
 
     res.send(data);
+    
   } catch (err) {
     console.error(err);
   }

@@ -252,7 +252,6 @@ export default {
 .hide {
   display: none;
 }
-
 .preview {
   display: flex;
   justify-content: center;
