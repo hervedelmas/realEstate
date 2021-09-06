@@ -98,6 +98,9 @@ const findProperties = async (queries, res) => {
 const saveProperty = async (property, res) => {
   try {
     await client.connect();
+    if (property.update.price) {
+      property.update.price = Number(property.update.price);
+    }
     const result = await properties.updateOne(property.query, { $set: property.update },
       { upsert: true }
     );
