@@ -2,8 +2,7 @@ node_modules
 .DS_Store
 package-lock.json
 front/package-lock.json
+.vscode/
 uploads/
 node_modules/
 front/node_modules/
-.vscode/launch.json
-.vscode/
