@@ -15,7 +15,6 @@ export default {
   components: {
     properties,
   },
-  methods: {},
 };
 </script>
 <style lang="scss" scoped>

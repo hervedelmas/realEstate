@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <div id="searchProperties" class="box subtitle is-3 container is-1">
+    <div
+      id="searchProperties"
+      v-if="showDiv"
+      class="box subtitle container is-1"
+    >
       SEARCH Properties :
       <div class="columns is-mobile">
         <div class="column">
@@ -21,8 +25,9 @@
         </div>
         <div class="column">
           <input
+            @keyup.enter="alerte('ok')"
             class="input"
-            type="text"
+            type="number"
             v-model="searchPrice"
             placeholder="price"
           />
@@ -48,7 +53,7 @@
         SEARCH
       </button>
     </div>
-    <div id="addProperty" class="box subtitle is-3 hide container is-1">
+    <div id="addProperty" v-else class="box subtitle container is-1">
       <form enctype="multipart/form-data">
         ADD Property :
         <div>
@@ -150,9 +155,9 @@
 import actions from "@/actions/actions.js";
 export default {
   name: "listProperties",
-  components: {},
   data() {
     return {
+      showDiv: true,
       property: {},
       properties: [],
       key: "",
@@ -172,6 +177,7 @@ export default {
     this.propertiesData(JSON.stringify({}));
   },
   methods: {
+    alerte(a){alert(a)},
     propertiesData(data) {
       actions.properties(JSON.stringify(data)).then(
         ((data) => {
@@ -186,8 +192,8 @@ export default {
         }).bind(this)
       );
     },
-    propertyData(data) { 
-      if (data.data.update.name == "") { 
+    propertyData(data) {
+      if (data.data.update.name == "") {
         alert("The name must be entered");
       } else {
         if (data.data.query.name == "") {
@@ -213,8 +219,7 @@ export default {
           this.price = data.properties[0].price;
           this.name = data.properties[0].name;
           this.url = data.properties[0].thumbnail;
-          document.getElementById("addProperty").style.display = "block";
-          document.getElementById("searchProperties").style.display = "none";
+          this.searchProperties();
         }).bind(this)
       );
     },
@@ -224,12 +229,10 @@ export default {
       this.location = "";
       this.price = "";
       this.name = "";
-      document.getElementById("addProperty").style.display = "block";
-      document.getElementById("searchProperties").style.display = "none";
+      this.searchProperties();
     },
     searchProperties() {
-      document.getElementById("addProperty").style.display = "none";
-      document.getElementById("searchProperties").style.display = "block";
+      this.showDiv = !this.showDiv;
     },
     onFileChange(e) {
       const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
