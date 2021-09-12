@@ -25,7 +25,7 @@
         </div>
         <div class="column">
           <input
-            @keyup.enter="alerte('ok')"
+            @keyup.enter.esc="alerte('ok')"
             class="input"
             type="number"
             v-model.number="searchPrice"
