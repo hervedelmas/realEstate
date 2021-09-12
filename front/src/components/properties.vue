@@ -25,7 +25,6 @@
         </div>
         <div class="column">
           <input
-            @keyup.enter="alerte('ok')"
             class="input"
             type="number"
             v-model.number="searchPrice"
@@ -177,7 +176,6 @@ export default {
     this.propertiesData(JSON.stringify({}));
   },
   methods: {
-    alerte(a){alert(a)},
     propertiesData(data) {
       actions.properties(JSON.stringify(data)).then(
         ((data) => {
