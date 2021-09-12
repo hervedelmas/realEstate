@@ -28,7 +28,7 @@
             @keyup.enter="alerte('ok')"
             class="input"
             type="number"
-            v-model="searchPrice"
+            v-model.number="searchPrice"
             placeholder="price"
           />
         </div>
